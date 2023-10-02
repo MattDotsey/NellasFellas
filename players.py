@@ -17,5 +17,5 @@ for player in players:
     name = players[player]['first_name'] + " " + players[player]['last_name']
     cursor.execute("INSERT OR IGNORE INTO players (player_id, player_name) values(?, ?)", (id, name))
     connection.commit()
-    connection.close()
+connection.close()
 
