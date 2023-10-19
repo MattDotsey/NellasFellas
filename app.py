@@ -73,62 +73,73 @@ def index():
     translate each draft pick into easy to understand terms, 
     translate each player into easy to understand terms.
     ''' 
+    adds_counter = 0
     for trade in trades:
          
         # iterate through trades to find strings
-        for item in range(len(trade)):
-            check = trade[item]
-               
+        for item in range(5,17):
+            # all assets converted from db to actual text stored here
+            final_asset_list = []
+                
             # if the string is a list in string format, and the first item in the string is a dict
-            # it is a draft pick or a player
-            if isinstance(check, str) and trade[item][0] == '[' and trade[item][1] == '{':
-                # convert into actual list
-                actual_list = json.loads(check)
-                    
-                # iterate through dictionaries in list
-                for x in range(len(actual_list)):
-                    # if it's a draft pick
-                    if 'season' in actual_list[x]:
-                        season = actual_list[x]['season']
-                        round = actual_list[x]['round']
-                        if round == 1:
-                            round = "1st"
-                        elif round == 2:
-                            round = "2nd"
-                        elif round == 3:
-                            round = "3rd"
-                        elif round == 4:
-                            round = "4th"
-                        elif round == 5:
-                            round = "5th"
-                        
-                        orig_owner = user_dict[actual_list[x]['roster_id']]['name']
-                        post_owner = user_dict[actual_list[x]['owner_id']]
-                        easy_read = f"{orig_owner}'s {season} {round}"
-                        trade[item] = easy_read
-                         
-                    # if it's a player
-                    if 'adds' in actual_list[x]:
-                        player_id = x['adds'].keys()
-                        print(player_id)
-                        # player = conn.execute("SELECT player_name FROM players WHERE player_id = ?", ).fetchall()
+            # it is an asset list, of some combination of 1 or more players/draft picks
+            # if isinstance(db_str_asset_list, str) and db_str_asset_list[0] == '[':
 
+            # 10/18 commented out above line
+            # since we should just be checking only assets received, 
+            # should be able to just check whether or not it is None
+            if trade[item] is not None:
+                #set db_str_asset_list equal to all assets received in a trade
+                db_str_asset_list = trade[item]   
+                # change string version of text to an actual list of all assets 
+                actual_asset_list = json.loads(db_str_asset_list)
+                
+                # iterate through all items in a specific asset list:
+                for asset in actual_asset_list:    
+                    
+                    # if x, then it is a draft pick
+                    if isinstance(asset, dict):    
+                        for key in asset:
+                            if key == 'season':
+                                season = asset['season']
+                                round = asset['round']
+                                if round == 1:
+                                    round = "1st"
+                                elif round == 2:
+                                    round = "2nd"
+                                elif round == 3:
+                                    round = "3rd"
+                                elif round == 4:
+                                    round = "4th"
+                                elif round == 5:
+                                    round = "5th"
+                                
+                                orig_owner = user_dict[actual_asset_list[0]['roster_id']]['name']
+                                # 10/18 11:47 commented this out, don't think I need
+                                # post_owner = user_dict[actual_asset_list[0]['owner_id']]
+                                easy_read = f"{orig_owner}'s {season} {round}"
+                                final_asset_list.append(easy_read)
+                            
+                    # if it's a list that means it's a player, 
+                    # replace player_id with player name from player table
+                    elif isinstance(asset, str):
+                        player_name = list(conn.execute("SELECT player_name FROM players WHERE player_id = ?", (asset,)).fetchall())
+                        player_name = list(player_name[0])
+                        player_name = player_name[0]
+                        final_asset_list.append(player_name)
 
                     '''
-                    STOPPING POINT
-
-                    NEED TO FIGURE OUT HOW TO ACCESS PLAYER_ID IN 
-
-                    {'adds': {'7547': 11}}
-                    '''
-
-
+                    10/17 EOD
                     
+                    need to fix the player portion of the program, make sure players are correctly converted.
 
+                    10/18 thoughts
+                    if multiple draft picks are traded, they might all be replaced by the last draft pick
 
+                    How can I handle trades where an owner receives both players and draft picks
+                    '''   
+                trade[item] = final_asset_list                           
 
-
-    print(trades) 
     conn.close()
     
     return render_template("index.html", user_dict = user_dict, trades = trades)

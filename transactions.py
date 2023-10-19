@@ -10,16 +10,12 @@ This program should be run daily, and should insert any new trades from the past
 '''
 
 # make a dictionary of roster_ids: {user_id: display_name} 
-# pull roster ids from rosters page
-
-roster_response = requests.get("https://api.sleeper.app/v1/league/924332039963328512/rosters")
-rosters = json.loads(roster_response.text)
 
 # pull user_id and display_name from users request
 users_response = requests.get("https://api.sleeper.app/v1/league/924332039963328512/users")
 users = json.loads(users_response.text)
 
-#hopefully can use rosters to get right 
+# pull roster ids from rosters page
 rosters_response = requests.get("https://api.sleeper.app/v1/league/924332039963328512/rosters")
 rosters = json.loads(rosters_response.text)
 
@@ -55,14 +51,15 @@ if season_type == 'off' and week == 0:
 else:
      transacts_week = week
 
+## gaming to pull previous trades
+transacts_week = 1
+
 transacts_response = requests.get(f"https://api.sleeper.app/v1/league/924332039963328512/transactions/{transacts_week}")
 transactions = json.loads(transacts_response.text)
 
 '''
 pull transactions and use other functions to insert readable data into SQL database
 '''
-
-# compare number of trades in league during current week to number of trades 
 
 # filter transactions results to just trades:
 trades = []
@@ -71,10 +68,6 @@ for transaction in transactions:
      if transaction['type'] == 'trade':
           trades.append(transaction)
 
-# insert all data points into db (assets under specific roster column)
-# this has to be flexible enough to accomdate owners of different lengths
-
-#("INSERT INTO season_state (date, week, season_type) values(?, ?, ?)", (today, week, season_type))
 
 transaction_id = 0
 date = ""
@@ -89,9 +82,6 @@ for trade in range(len(trades)):
     date = today
     year = today.year
     str_converter = {1:"roster1_rec", 2:"roster2_rec", 3:"roster3_rec", 4:"roster4_rec", 5:"roster5_rec", 6:"roster6_rec", 7:"roster7_rec", 8:"roster8_rec", 9:"roster9_rec", 10:"roster10_rec", 11:"roster11_rec", 12:"roster12_rec"}
-    # commented out for now, may not actually need this
-    # roster1_rec = roster2_rec = roster3_rec = roster4_rec = roster5_rec = roster6_rec = roster7_rec = roster8_rec = roster9_rec = roster10_rec = roster11_rec = roster12_rec = []
-    # tup_converter = {1:roster1_rec, 2:roster2_rec, 3:roster3_rec, 4:roster4_rec, 5:roster5_rec, 6:roster6_rec, 7:roster7_rec, 8:roster8_rec, 9:roster9_rec, 10:roster10_rec, 11:roster11_rec, 12:roster12_rec}
     query = f"INSERT or IGNORE INTO transactions (transaction_id, date, season, owners" 
     params = [transaction_id, date, year, json_owners]
 
@@ -119,11 +109,11 @@ for trade in range(len(trades)):
         # if players were traded
         if trades[trade]['adds'] != None:
             adds = trades[trade]['adds']
-               
             #add the players to proper list
             for add in adds:
-                if adds.values()[add] == owners[owner]:
-                    assets.append(adds[add])
+                if adds.get(add) == owner:
+                    assets.append(add)
+
         json_assets = json.dumps(assets)
         params.append(json_assets)
         

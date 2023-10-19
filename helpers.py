@@ -35,6 +35,10 @@ def get_user_dict():
                         user_dict.update({roster_id: {"id": user_id, "name": display_name}})
     return user_dict
 
+# need to take user_dict and put it into an sql table so we can upload it to github
+
+
+
 # get roster numbers
 
 
