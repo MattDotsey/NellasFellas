@@ -1,6 +1,6 @@
 # NellasFellas Dynasty Fantasy Football Trade Database
 
-This project is a website that makes API calls to the sleeper.com website, and arranges information from the website into a webpage, so other members of the league can access the most recent transactions. I felt as though the Sleeper website did not have an easy way to look at recent trades, and though it might be interesting to me and the rest of the league I am in to be able toa ccess that information
+This project is a website that makes API calls to the sleeper.com website, and arranges information from the website into a webpage, so other members of the league can access the most recent transactions. I felt as though the Sleeper website did not have an easy way to look at recent trades, and though it might be interesting to me and the rest of the league I am in to be able to access that information
 
 At this point in time the entire project is uploaded here to Github Pages, but because the website is not static, hosting the website in its current form for free is beyond my programming capabilities. Despite that, I still  think that it is a good showcase of my python, sql, and HTML skills. 
 
