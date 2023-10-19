@@ -32,8 +32,8 @@ need to figure out at what point that changes
 state_response = requests.get("https://api.sleeper.app/v1/state/nfl")
 state = json.loads(state_response.text)
 
-# MAKE A PROGRAM TO SAVE THE DATE THAT THIS PROGRAM IS RUN AND THE season_type changes from "off" to "on"
-# SMALL DB WILL HOLD THE DATE AND THE SEASON_TYPE FOR THAT DATE
+# SAVE THE DATE THAT THIS PROGRAM IS RUN AND THE season_type changes from "off" to "on"
+# SMALL TABLE WILL HOLD THE DATE AND THE SEASON_TYPE FOR THAT DATE
 
 season_type = state['season_type']
 week = state['week']
@@ -58,7 +58,6 @@ def get_db_connection():
     # cursor = connection.cursor()
     return conn
 
-# program to select all players a roster has recieved in a trade this year
 @app.route('/')
 def index():
     """home page"""
@@ -80,12 +79,7 @@ def index():
         for item in range(5,17):
             # all assets converted from db to actual text stored here
             final_asset_list = []
-                
-            # if the string is a list in string format, and the first item in the string is a dict
-            # it is an asset list, of some combination of 1 or more players/draft picks
-            # if isinstance(db_str_asset_list, str) and db_str_asset_list[0] == '[':
 
-            # 10/18 commented out above line
             # since we should just be checking only assets received, 
             # should be able to just check whether or not it is None
             if trade[item] is not None:
@@ -115,8 +109,6 @@ def index():
                                     round = "5th"
                                 
                                 orig_owner = user_dict[actual_asset_list[0]['roster_id']]['name']
-                                # 10/18 11:47 commented this out, don't think I need
-                                # post_owner = user_dict[actual_asset_list[0]['owner_id']]
                                 easy_read = f"{orig_owner}'s {season} {round}"
                                 final_asset_list.append(easy_read)
                             
@@ -126,18 +118,7 @@ def index():
                         player_name = list(conn.execute("SELECT player_name FROM players WHERE player_id = ?", (asset,)).fetchall())
                         player_name = list(player_name[0])
                         player_name = player_name[0]
-                        final_asset_list.append(player_name)
-
-                    '''
-                    10/17 EOD
-                    
-                    need to fix the player portion of the program, make sure players are correctly converted.
-
-                    10/18 thoughts
-                    if multiple draft picks are traded, they might all be replaced by the last draft pick
-
-                    How can I handle trades where an owner receives both players and draft picks
-                    '''   
+                        final_asset_list.append(player_name) 
                 trade[item] = final_asset_list                           
 
     conn.close()
