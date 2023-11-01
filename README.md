@@ -36,6 +36,16 @@ In the final section of the project, I used Flask to combine the tables that I h
 
 This program basically does the same thing as the transactions program, but with a different start and end point. It takes the information from the transactions database, translates the different storage methods for players and draft picks into plain english, and then assembles them into lists that the HTML and Bootstrap can present to the user. 
 
+### Team Power Rankings
+
+The first project that I wanted to add on to the website is the ability to track total team value over time. I chose this project because it would be a good way to build a base of data that I might be able to analyze in future projects, while not being as large of an undertaking as some of the other ideas that I had. 
+
+The issues that I encountered along the way shaped how I made the project, So the easiest way to explain how I worked through the project would be by explaining the problems that I had to solve. The first problem that I had was the issue of how I wanted to store the data. Originally my plan was to create a table that would store the values of individual players over time, and then I would pull current rosters for each team using the Sleeper API, and match players with their current values. That plan was very complicated for what I was trying to accomplish, and several problems popped up. The most annoying one was how to handle players with identical names. There wasn't an easy way to use the players table I already created and combine it with data scraped from the KeepTradeCut.com website while assigning the player value to the correct player when multiple players with the same name existed. I had a few different ideas for how to handle it (incorporating team or position into the players table, for instance) but instead of struggling through that, I decided to just scale back my ambitions a little bit, so I could get the table up and storing data for me as quickly as possible. 
+
+My next plan was to just use the BeautifulSoup Library to scrape rosters and player values both from the KTC website, using a power rankings feature found on the website. The problem with this was when I found out that BeautifulSoup does not work on dynamically created HTML content, so I was not able to use it to scrape the information i wanted to. At this point I could either go back to my original plan, or learn the Selenium library, which seemed to offer the functionality I was looking for. I decided to try Selenium.
+
+
+
 ### Future Improvements
 
 There are a couple different things I would add to or change about the website, given the chance.
