@@ -14,25 +14,29 @@ rosters = json.loads(roster_response.text)
 
 # pull user_id and display_name from users request
 users_response = requests.get("https://api.sleeper.app/v1/league/924332039963328512/users")
-leagues = json.loads(users_response.text)
+users = json.loads(users_response.text)
 
 
 
-# loop through rosters to get roster_id and owner_id
+# loop through rosters to get roster_id, owner_id, and team name
+# loop through rosters to get roster_id, owner_id, and team name
 def get_user_dict():
-    # pull user_id and display_name from users request
-    users_response = requests.get("https://api.sleeper.app/v1/league/924332039963328512/users")
-    users = json.loads(users_response.text)
     user_dict = {}
-    for roster in range(len(rosters)):
-        roster_id = rosters[roster]['roster_id']
-        user_id = rosters[roster]['owner_id']
+    for roster in rosters:
+        roster_id = roster['roster_id']
+        user_id = roster['owner_id']
         
         # loop through users and find entry where user_id = user_id from rosters
-        for user in range(len(users)):
-                if users[user]['user_id'] == user_id:
-                        display_name = users[user]['display_name']
-                        user_dict.update({roster_id: {"id": user_id, "name": display_name}})
+        for user in users:
+                if user['user_id'] == user_id:
+                        display_name = user['display_name']
+                        try:
+                            team_name = user['metadata']['team_name']
+                        except:
+                            team_name = display_name
+        
+        user_dict[roster_id] = {'user_id': user_id, 'display_name': display_name, 'team_name': team_name}
+    
     return user_dict
 
 # need to take user_dict and put it into an sql table so we can upload it to github
