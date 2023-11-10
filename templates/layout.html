@@ -1,26 +1,3 @@
-<!-- 
-    {% extends "layout.html" %}
-
-{% block title %}
-    Home
-{% endblock %}
-
-{% block main %} 
-this is the header for index.html if we extend layout in the future, 
-use finance.py from cs50 for reference if unclear
--->
-
-<!-- 
-this is the footer for index.html, again finance.py from cs50 for reference    
-    <h3>Account Totals: </h3>
-    <h5>Current Cash Balance {{ cashOH }}</h5>
-    <h5><a class="btn btn-primary" href="/addCash">Add Cash</a></h5>
-    <h5>Cash + Stock Value Total {{ totalvalueint }}</h5>
-{% endblock %}-->
-
-
-
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -31,15 +8,9 @@ this is the footer for index.html, again finance.py from cs50 for reference
         <meta name="viewport" content="initial-scale=1, width=device-width">
 
         <!-- http://getbootstrap.com/docs/5.1/ -->
-        <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
-        <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
-
-        <!-- https://favicon.io/emoji-favicons/money-bag/ -->
-        <link href="/static/favicon.ico" rel="icon">
-
-        <link href="/static/styles.css" rel="stylesheet">
-
-        <title>NellasFellas {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+ 
+        <title>NellasFellas </title>
 
     </head>
 
@@ -47,41 +18,21 @@ this is the footer for index.html, again finance.py from cs50 for reference
 
         <nav class="bg-light border navbar navbar-expand-md navbar-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/"><span class="blue">C</span><span class="red">$</span><span class="yellow">5</span><span class="green">0</span> <span class="red">Finance</span></a>
+                <a class="navbar-brand" href="/"><span class="blue">NellasFellas</span></a>
                 <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
-                    {% if session["user_id"] %}
                         <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/quote">Quote</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/buy">Buy</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/sell">Sell</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/history">History</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/team_val_tracker">Team Values</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/trade_history">Trade History</a></li>
                         </ul>
-                        <ul class="navbar-nav ms-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
-                        </ul>
-                    {% else %}
-                        <ul class="navbar-nav ms-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
-                        </ul>
-                    {% endif %}
                 </div>
             </div>
         </nav>
 
-        {% if get_flashed_messages() %}
-            <header>
-                <div class="alert alert-primary mb-0 text-center" role="alert">
-                    {{ get_flashed_messages() | join(" ") }}
-                </div>
-            </header>
-        {% endif %}
-
         <main class="container-fluid py-5 text-center">
-            {% block main %}{% endblock %}
+            {% block content %}{% endblock %}
         </main>
 
         <footer class="mb-5 small text-center text-muted">

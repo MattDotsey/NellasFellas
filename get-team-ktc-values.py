@@ -70,8 +70,6 @@ for sleeper in owner_info_dict:
             owner_info_dict[sleeper]['value'] = ktc_value_dict[ktc]
             break
 
-print(owner_info_dict)
-
 ''' 
 now need to insert roster_id, date, and value into a table
 '''

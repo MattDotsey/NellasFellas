@@ -108,7 +108,7 @@ def index():
                                 elif round == 5:
                                     round = "5th"
                                 
-                                orig_owner = user_dict[actual_asset_list[0]['roster_id']]['name']
+                                orig_owner = user_dict[actual_asset_list[0]['roster_id']]['team_name']
                                 easy_read = f"{orig_owner}'s {season} {round}"
                                 final_asset_list.append(easy_read)
                             

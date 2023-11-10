@@ -3,13 +3,11 @@ import json
 import requests
 import sqlite3
 
-#configure application
-
 '''
 This program should be run daily, and should insert any new trades from the past day into the trades database
 '''
 
-# make a dictionary of roster_ids: {user_id: display_name} 
+print("test debug 1")
 
 # pull user_id and display_name from users request
 users_response = requests.get("https://api.sleeper.app/v1/league/924332039963328512/users")
@@ -33,7 +31,7 @@ state_response = requests.get("https://api.sleeper.app/v1/state/nfl")
 state = json.loads(state_response.text)
 
 # MAKE A PROGRAM TO SAVE THE DATE THAT THIS PROGRAM IS RUN AND THE season_type changes from "off" to "on"
-# SMALL DB WILL HOLD THE DATE AND THE SEASON_TYPE FOR THAT DATE
+# SMALL table WILL HOLD THE DATE AND THE SEASON_TYPE FOR THAT DATE
 
 season_type = state['season_type']
 week = state['week']
@@ -51,9 +49,6 @@ if season_type == 'off' and week == 0:
 else:
      transacts_week = week
 
-## gaming to pull previous trades
-transacts_week = 1
-
 transacts_response = requests.get(f"https://api.sleeper.app/v1/league/924332039963328512/transactions/{transacts_week}")
 transactions = json.loads(transacts_response.text)
 
@@ -67,7 +62,6 @@ trades = []
 for transaction in transactions:
      if transaction['type'] == 'trade':
           trades.append(transaction)
-
 
 transaction_id = 0
 date = ""
@@ -88,9 +82,6 @@ for trade in range(len(trades)):
     # make a list of all assets going to each owner
     # add roster column for specific owners to INSERT statement 
     for owner in owners:
-        # commented out roster lists, don't think i will need
-        # need to reset roster_rec for each owner?
-        # roster1_rec = roster2_rec = roster3_rec = roster4_rec = roster5_rec = roster6_rec = roster7_rec = roster8_rec = roster9_rec = roster10_rec = roster11_rec = roster12_rec = []
         # takes specific owner and sets id_str equal to string representation of roster_rec
         id_str = str_converter[owner]
         query += f", {id_str}"
