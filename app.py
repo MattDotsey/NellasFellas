@@ -125,6 +125,17 @@ def index():
     
     return render_template("index.html", user_dict = user_dict, trades = trades)
 
+@app.route("/team_val_tracker")
+def team_val_tracker():
+
+    """This page will only contain a chart showing the values of each team over time"""
+    
+    conn = get_db_connection()
+    trades = conn.execute("SELECT * FROM transactions").fetchall()
+    
+    trades = [list(ele) for ele in trades]
+
+
 if __name__ == '__main__':
     app.run()
 # have a separate page for each     

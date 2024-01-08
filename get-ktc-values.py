@@ -4,6 +4,10 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from os import path
 
+'''
+Not Finished, not usable at this time
+'''
+
 #get trade values from KTC website
 #can optionally specify superflex/non-SF (sf by default)
 #can optionally include draft pick values (included by default)
