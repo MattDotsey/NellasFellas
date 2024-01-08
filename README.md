@@ -24,7 +24,7 @@ In this section, I got all of the pertinent information about each specific trad
 
 The transactions list from the API call contains a list of all transactions in the league, such as waiver claims and other less important information, so the program picks the trades out from the rest of the transactions, and appends each trade as its own element in a list. From there, the program iterates through each trade in the list and identifies the date the transaction took place, the unique transaction ID (Set as unique in the database structure to make sure there are no duplicates in the transactions table), the season the trade took place, the owners involved in the trade, and the assets (draft picks and players) involved in the trade. The program than takes all that information and uses string concatenation to build sql commands that eventually insert all of the information into a transactions table. 
 
-<img src="docs/NellasFellas Transactions Table.png" alt="TransactTable" width="1250" height="350"/>
+<img src="docs/images/nellasfellas_transact_table.png" alt="TransactTable" width="1250" height="350"/>
 
 The biggest difficulty I had with this section was the fact that while most trades in our league involve 2 owners, there is theoretically the option for a trade to occur between any number of owners. Because of that, the table (and the rudimentary HTML front end) needed to be able to handle the edge cases of a 3, 4 or even 12 person trade. 
 
